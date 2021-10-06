@@ -1,18 +1,18 @@
 # Geopy for coordinates and distances
-from geopy import distance
 from geopy.geocoders import Nominatim
 from geopy.distance import geodesic
 # Pandas to read cities names
 import pandas as pd
-import ast
 
-dadosMunicipiosRJ = '/home/franreno/Documents/ic/munincipiosRJ/RJdata/dadosMunicipiosRJ.xlsx'
+dadosMunicipiosRJ = './munincipiosRJ/RJdata/dadosMunicipiosRJ.xlsx'
 
+# Get all cities names
 def getCities(): 
     df = pd.read_excel(dadosMunicipiosRJ)
     allCities = df["Município"]
     return allCities
 
+# Calculate all distances from a certain city
 def calculateDistances(currentCity: str, latlnglist):
     geolocator = Nominatim(user_agent="My-App")
     _thisCity = [currentCity]
@@ -35,8 +35,8 @@ def calculateDistances(currentCity: str, latlnglist):
     print("---------------------------------------------\n")
     _thisCity.append(_thisDict)
     return _thisCity
-        
-    
+
+# Gets the latitude and longitude of a city  
 def getLatLng(city):
     geolocator = Nominatim(user_agent="My-App")
     location = geolocator.geocode(city)
@@ -44,6 +44,7 @@ def getLatLng(city):
 
     return [lat,lng]
 
+# Create object to be used on the graph
 def createListOfTuplesWithObject(dataframe):
     headTitles = ["id", "Municipio", "Latitude", "Longitude", "Limitrofes", "Distancia"]
 
@@ -65,16 +66,19 @@ def createListOfTuplesWithObject(dataframe):
     return listOfTuples
 
 def main():
-    limpath = '/home/franreno/Documents/ic/munincipiosRJ/RJdata/limitrofes.csv'
+    limpath = './munincipiosRJ/RJdata/limitrofes.csv'
     limdf = pd.read_csv(limpath)
 
     allCities = getCities()
     allCitiesList = []
     latlnglist = {}
+
+    # Generate lat,lng dict
     for i in range(len(allCities)):
-        print(f"Get lat and lng from city {i}/{len(allCities)}\n")
+        print(f"Getting lat and lng from city {i}/{len(allCities)}\n")
         latlnglist[allCities[i]] = getLatLng(allCities[i])
 
+    # Generate main list
     for i in range(len(allCities)):
         print(f"Calculating distance from city {allCities[i]} -- {i}/{len(allCities)} . . .\n")
         cityList = calculateDistances(allCities[i], latlnglist)
@@ -83,9 +87,12 @@ def main():
         cityList.insert(1, latlnglist[allCities[i]][0])
         allCitiesList.append(cityList)
 
+    # Cols to be used in the pandas dataframe
     cols = ["Municipios", "Latitude", "Longitude", "Limitrofes", "Distancias"]
     df = pd.DataFrame(allCitiesList, columns=cols)
-    df.to_csv('distanciasRJ.csv')
+    df.to_csv('./munincipiosRJ/RJdata/mainRJData.csv')
+
+
 
 if __name__ == "__main__":
     main()

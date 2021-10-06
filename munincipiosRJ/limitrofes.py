@@ -95,7 +95,7 @@ def getLimitrofesFromCity(url):
 def parseAndCreateCSV(obj):
     cols = ["Municipios", "Municipios Limitrofes"]
     df = pd.DataFrame(obj, columns=cols)
-    df.to_csv('limitrofes.csv')
+    df.to_csv('./munincipiosRJ/RJdata/limitrofes.csv')
 
 
 if __name__ == "__main__":

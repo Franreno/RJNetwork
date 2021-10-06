@@ -1,8 +1,8 @@
 import networkx as nx
 import pandas as pd
 import matplotlib.pyplot as plt
-import ast
-from distances import createListOfTuplesWithObject
+from genCSV import createListOfTuplesWithObject
+
 
 def createNetwork():
 
@@ -15,22 +15,20 @@ def createNetwork():
 
     # Add nodes
     for i in range(len(data)):
-        G.add_nodes_from([ (i, data[i][1]) ])
+        G.add_nodes_from([(i, data[i][1])])
 
     # Add edges
     for i in range(len(data)):
         cityNumber = data[i][0]
         cityName = data[i][1]["Municipio"]
         limitrofes = data[i][1]["Limitrofes"].split(',')
-        # print(f"Cidade: {cityName}, {i}/92")
+
         for l in limitrofes:
-            #Search the data for l
-            # print(f"\tProcurando por limitrofe: {l}")
+            # Search the data for l
             for j in range(len(data)):
-                if ( l == data[j][1]["Municipio"] ):
+                if (l == data[j][1]["Municipio"]):
                     newEdge = data[j][0]
-                    # print(f"\t\tEntrei, adicionando {cityNumber} a {newEdge}")
-                    
+
                     G.add_edge(cityNumber, newEdge)
 
     return G
@@ -39,5 +37,3 @@ def createNetwork():
 G = createNetwork()
 nx.draw(G, with_labels=True, font_weight='bold')
 plt.show()
-
-
