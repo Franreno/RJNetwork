@@ -3,6 +3,8 @@ from geopy.geocoders import Nominatim
 from geopy.distance import geodesic
 # Pandas to read cities names
 import pandas as pd
+import numpy as np
+
 
 dadosMunicipiosRJ = './munincipiosRJ/RJdata/dadosMunicipiosRJ.xlsx'
 
@@ -103,18 +105,19 @@ def normalize(df):
     result = df.copy()
     years = ["2010", "2011", "2012", "2013", "2014", "2015"]
     for year in years:
-        max_value = df[year].max()
-        min_value = df[year].min()
-        result[year] = (df[year] - min_value) / (max_value - min_value)
+        # max_value = df[year].max()
+        # min_value = df[year].min()
+        # result[year] = (df[year] - min_value) / (max_value - min_value)
+        result[year] = np.log(df[year])
     return result
 
 # Create object to be used on the graph
 def createListOfTuplesWithObject():
     mainRJDatapath = './munincipiosRJ/RJdata/mainRJData.csv'
 
-    dataframe = pd.read_csv(mainRJDatapath)
+    df = pd.read_csv(mainRJDatapath)
 
-    # dataframe = normalize(df)
+    dataframe = normalize(df)
 
 
     headTitles = ["id", "Municipio", "Latitude", "Longitude", "Limitrofes", "2010", "2011", "2012", "2013", "2014", "2015"]
