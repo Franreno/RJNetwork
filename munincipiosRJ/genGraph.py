@@ -18,12 +18,12 @@ def createNetwork():
         G.add_nodes_from([(i, data[i][1])])
 
     # Generate random positions
-    pos = nx.drawing.layout.random_layout(G)
+    # pos = nx.drawing.layout.random_layout(G)
     # Add to the nodes data
 
     i = 0
     for node in G.nodes:
-        G.nodes[node]['gpos'] = pos[i]
+        G.nodes[node]['gpos'] = (data[i][1]['Longitude'], data[i][1]['Latitude'])
         i += 1
 
     # Add edges
@@ -44,5 +44,6 @@ def createNetwork():
 
 
 # G = createNetwork()
-# nx.draw(G, with_labels=True, font_weight='bold')
+# pos = {city:(long,lat) for (city, (long, lat)) in nx.get_node_attributes(G, 'gpos').items()}
+# nx.draw(G,pos,with_labels=True, font_weight='bold')
 # plt.show()

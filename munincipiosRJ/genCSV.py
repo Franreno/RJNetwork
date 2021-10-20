@@ -38,15 +38,64 @@ def calculateDistances(currentCity: str, latlnglist):
 
 # Gets the latitude and longitude of a city  
 def getLatLng(city):
+    city = city + ", Rio de Janeiro"
     geolocator = Nominatim(user_agent="My-App")
     location = geolocator.geocode(city)
     lat,lng = location.latitude, location.longitude
+    print(f"City: {city}: ({lat},{lng})")
 
     return [lat,lng]
 
+def getDengueData():
+    names = ['id', 'cities']
+    for i in range(1,53):
+        names.append(str(i))
+    names.append('total')
+
+
+    xlsPath = './munincipiosRJ/RJdata/Dengue_Brasil_2010-2016_Daniel.xlsx'
+    df = pd.read_excel(xlsPath, names=names, header=None, sheet_name=None)
+    sheets = list(df.keys())
+
+    return df['2015']['total']
+
+
+def main():
+    limpath = './munincipiosRJ/RJdata/limitrofes.csv'
+    LatLngPath = './munincipiosRJ/RJdata/LatLng.csv'
+    limdf = pd.read_csv(limpath)
+    limitrofes = {}
+
+
+    LatLngDF = pd.read_csv(LatLngPath)
+
+    allCities = getCities()
+    allCitiesList = []
+
+    DengueDataOfYear2015 = getDengueData()
+
+    for i in range(len(limdf["Municipio"])):
+        limitrofes[limdf["Municipio"][i]] = limdf["Municipios Limitrofes"][i]
+
+    # Generate main list
+    for i in range(len(allCities)):
+        
+        cityList = [allCities[i]]
+        cityList.append(LatLngDF["Latitude"][i])
+        cityList.append(LatLngDF["Longitude"][i])
+        cityList.append(limitrofes[allCities[i]])
+        cityList.append(DengueDataOfYear2015[i])
+        allCitiesList.append(cityList)
+
+    # Cols to be used in the pandas dataframe
+    cols = ["Municipios", "Latitude", "Longitude", "Limitrofes", "TotalDengue"]
+    df = pd.DataFrame(allCitiesList, columns=cols)
+    df.to_csv('./munincipiosRJ/RJdata/mainRJData.csv')
+
+
 # Create object to be used on the graph
 def createListOfTuplesWithObject(dataframe):
-    headTitles = ["id", "Municipio", "Latitude", "Longitude", "Limitrofes", "Distancia"]
+    headTitles = ["id", "Municipio", "Latitude", "Longitude", "Limitrofes", "TotalDengue"]
 
     listOfTuples = []
 
@@ -57,42 +106,17 @@ def createListOfTuplesWithObject(dataframe):
         mainDict[headTitles[2]] = dataframe["Latitude"][i]
         mainDict[headTitles[3]] = dataframe["Longitude"][i]
         mainDict[headTitles[4]] = dataframe["Limitrofes"][i]
-        distanceDict = (dataframe["Distancias"][i])
-        mainDict[headTitles[5]] = distanceDict
+        mainDict[headTitles[5]] = dataframe["TotalDengue"][i]
+        # distanceDict = (dataframe["Distancias"][i])
+        # mainDict[headTitles[5]] = distanceDict
         
         listOfTuples.append( (i,mainDict) )
 
 
     return listOfTuples
 
-def main():
-    limpath = './munincipiosRJ/RJdata/limitrofes.csv'
-    limdf = pd.read_csv(limpath)
-
-    allCities = getCities()
-    allCitiesList = []
-    latlnglist = {}
-
-    # Generate lat,lng dict
-    for i in range(len(allCities)):
-        print(f"Getting lat and lng from city {i}/{len(allCities)}\n")
-        latlnglist[allCities[i]] = getLatLng(allCities[i])
-
-    # Generate main list
-    for i in range(len(allCities)):
-        print(f"Calculating distance from city {allCities[i]} -- {i}/{len(allCities)} . . .\n")
-        cityList = calculateDistances(allCities[i], latlnglist)
-        cityList.insert(1, limdf['Municipios Limitrofes'][i])
-        cityList.insert(1, latlnglist[allCities[i]][1])
-        cityList.insert(1, latlnglist[allCities[i]][0])
-        allCitiesList.append(cityList)
-
-    # Cols to be used in the pandas dataframe
-    cols = ["Municipios", "Latitude", "Longitude", "Limitrofes", "Distancias"]
-    df = pd.DataFrame(allCitiesList, columns=cols)
-    df.to_csv('./munincipiosRJ/RJdata/mainRJData.csv')
-
 
 
 if __name__ == "__main__":
+    # getDengueData()
     main()

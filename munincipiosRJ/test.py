@@ -5,6 +5,9 @@ import plotly.graph_objects as go
 G = createNetwork()
 
 
+# Colocar os nós como se fosse no rio de janeiro
+# Misturar os dados de dengue.
+
 edge_x = []
 edge_y = []
 for edge in G.edges():
@@ -46,7 +49,7 @@ node_trace = go.Scatter(
         size=10,
         colorbar=dict(
             thickness=15,
-            title='Node Connections',
+            title='Total de casos de Dengue no ano',
             xanchor='left',
             titleside='right'
         ),
@@ -55,8 +58,8 @@ node_trace = go.Scatter(
 node_adjacencies = []
 node_text = []
 for node, adjacencies in enumerate(G.adjacency()):
-    node_adjacencies.append(len(adjacencies[1]))
-    node_text.append(f"Municipio: {G.nodes[node]['Municipio']}[{str(node)}]   |   Numero de conexoes: {str(len(adjacencies[1]))}")
+    node_adjacencies.append( G.nodes[node]['TotalDengue'] )
+    node_text.append(f"Municipio: {G.nodes[node]['Municipio']}[{str(node)}]   |   Total de casos de Dengue: { str(G.nodes[node]['TotalDengue']) }")
 
 node_trace.marker.color = node_adjacencies
 node_trace.text = node_text
