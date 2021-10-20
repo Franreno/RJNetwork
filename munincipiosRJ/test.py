@@ -33,45 +33,49 @@ for node in G.nodes():
     node_x.append(x)
     node_y.append(y)
 
-node_trace = go.Scatter(
-    x=node_x, y=node_y,
-    mode='markers',
-    hoverinfo='text',
-    marker=dict(
-        showscale=True,
-        # colorscale options
-        #'Greys' | 'YlGnBu' | 'Greens' | 'YlOrRd' | 'Bluered' | 'RdBu' |
-        #'Reds' | 'Blues' | 'Picnic' | 'Rainbow' | 'Portland' | 'Jet' |
-        #'Hot' | 'Blackbody' | 'Earth' | 'Electric' | 'Viridis' |
-        colorscale='YlGnBu',
-        reversescale=True,
-        color=[],
-        size=10,
-        colorbar=dict(
-            thickness=15,
-            title='Total de casos de Dengue no ano',
-            xanchor='left',
-            titleside='right'
-        ),
-        line_width=2))
+# years = input("Escolha um ano: [2010, 2011, 2012, 2013, 2014, 2015]\n  >")
+# year = year if year != None else "2010"
+years = ["2010", "2011", "2012", "2013", "2014", "2015"]
+for year in years:
+    node_trace = go.Scatter(
+        x=node_x, y=node_y,
+        mode='markers',
+        hoverinfo='text',
+        marker=dict(
+            showscale=True,
+            # colorscale options
+            #'Greys' | 'YlGnBu' | 'Greens' | 'YlOrRd' | 'Bluered' | 'RdBu' |
+            #'Reds' | 'Blues' | 'Picnic' | 'Rainbow' | 'Portland' | 'Jet' |
+            #'Hot' | 'Blackbody' | 'Earth' | 'Electric' | 'Viridis' |
+            colorscale='YlGnBu',
+            reversescale=True,
+            color=[],
+            size=10,
+            colorbar=dict(
+                thickness=15,
+                title=f'Total de casos de Dengue no ano {year}',
+                xanchor='left',
+                titleside='right'
+            ),
+            line_width=2))
 
-node_adjacencies = []
-node_text = []
-for node, adjacencies in enumerate(G.adjacency()):
-    node_adjacencies.append( G.nodes[node]['TotalDengue'] )
-    node_text.append(f"Municipio: {G.nodes[node]['Municipio']}[{str(node)}]   |   Total de casos de Dengue: { str(G.nodes[node]['TotalDengue']) }")
+    node_adjacencies = []
+    node_text = []
+    for node, adjacencies in enumerate(G.adjacency()):
+        node_adjacencies.append( G.nodes[node][year] )
+        node_text.append(f"Municipio: {G.nodes[node]['Municipio']}[{str(node)}]   |   Total de casos de Dengue no Ano {year}: { str(G.nodes[node][year]) }")
 
-node_trace.marker.color = node_adjacencies
-node_trace.text = node_text
+    node_trace.marker.color = node_adjacencies
+    node_trace.text = node_text
 
-fig = go.Figure(data=[edge_trace, node_trace],
-             layout=go.Layout(
-                title='<br>Grafo Rio de Janeiro',
-                titlefont_size=16,
-                showlegend=False,
-                hovermode='closest',
-                margin=dict(b=20,l=5,r=5,t=40),
-                xaxis=dict(showgrid=False, zeroline=False, showticklabels=False),
-                yaxis=dict(showgrid=False, zeroline=False, showticklabels=False))
-                )
-fig.show()
+    fig = go.Figure(data=[edge_trace, node_trace],
+                layout=go.Layout(
+                    title=f'<br>Grafo Rio de Janeiro. Ano {year}',
+                    titlefont_size=16,
+                    showlegend=False,
+                    hovermode='closest',
+                    margin=dict(b=20,l=5,r=5,t=40),
+                    xaxis=dict(showgrid=False, zeroline=False, showticklabels=False),
+                    yaxis=dict(showgrid=False, zeroline=False, showticklabels=False))
+                    )
+    fig.show()

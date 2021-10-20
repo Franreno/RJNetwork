@@ -46,7 +46,7 @@ def getLatLng(city):
 
     return [lat,lng]
 
-def getDengueData():
+def getDengueData(year):
     names = ['id', 'cities']
     for i in range(1,53):
         names.append(str(i))
@@ -57,7 +57,7 @@ def getDengueData():
     df = pd.read_excel(xlsPath, names=names, header=None, sheet_name=None)
     sheets = list(df.keys())
 
-    return df['2015']['total']
+    return df[year]['total']
 
 
 def main():
@@ -72,7 +72,10 @@ def main():
     allCities = getCities()
     allCitiesList = []
 
-    DengueDataOfYear2015 = getDengueData()
+    years = ['2010', '2011', '2012', '2013', '2014', '2015']
+
+    DengueDataOfYear = [getDengueData(a) for a in years]
+    
 
     for i in range(len(limdf["Municipio"])):
         limitrofes[limdf["Municipio"][i]] = limdf["Municipios Limitrofes"][i]
@@ -84,29 +87,54 @@ def main():
         cityList.append(LatLngDF["Latitude"][i])
         cityList.append(LatLngDF["Longitude"][i])
         cityList.append(limitrofes[allCities[i]])
-        cityList.append(DengueDataOfYear2015[i])
+        for j in range(len(years)):
+            cityList.append(DengueDataOfYear[j][i])
         allCitiesList.append(cityList)
 
     # Cols to be used in the pandas dataframe
-    cols = ["Municipios", "Latitude", "Longitude", "Limitrofes", "TotalDengue"]
+    cols = ["Municipios", "Latitude", "Longitude", "Limitrofes"]
+    cols += years
+    print(cols)
     df = pd.DataFrame(allCitiesList, columns=cols)
     df.to_csv('./munincipiosRJ/RJdata/mainRJData.csv')
 
 
+def normalize(df):
+    result = df.copy()
+    years = ["2010", "2011", "2012", "2013", "2014", "2015"]
+    for year in years:
+        max_value = df[year].max()
+        min_value = df[year].min()
+        result[year] = (df[year] - min_value) / (max_value - min_value)
+    return result
+
 # Create object to be used on the graph
-def createListOfTuplesWithObject(dataframe):
-    headTitles = ["id", "Municipio", "Latitude", "Longitude", "Limitrofes", "TotalDengue"]
+def createListOfTuplesWithObject():
+    mainRJDatapath = './munincipiosRJ/RJdata/mainRJData.csv'
+
+    dataframe = pd.read_csv(mainRJDatapath)
+
+    # dataframe = normalize(df)
+
+
+    headTitles = ["id", "Municipio", "Latitude", "Longitude", "Limitrofes", "2010", "2011", "2012", "2013", "2014", "2015"]
+
 
     listOfTuples = []
 
     for i in range(len(dataframe)):
         #Create main object
         mainDict = {}
-        mainDict[headTitles[1]] = dataframe["Municipios"][i]
-        mainDict[headTitles[2]] = dataframe["Latitude"][i]
-        mainDict[headTitles[3]] = dataframe["Longitude"][i]
-        mainDict[headTitles[4]] = dataframe["Limitrofes"][i]
-        mainDict[headTitles[5]] = dataframe["TotalDengue"][i]
+        mainDict[headTitles[1]]  = dataframe["Municipios"][i]
+        mainDict[headTitles[2]]  = dataframe["Latitude"][i]
+        mainDict[headTitles[3]]  = dataframe["Longitude"][i]
+        mainDict[headTitles[4]]  = dataframe["Limitrofes"][i]
+        mainDict[headTitles[5]]  = dataframe["2010"][i]
+        mainDict[headTitles[6]]  = dataframe["2011"][i]
+        mainDict[headTitles[7]]  = dataframe["2012"][i]
+        mainDict[headTitles[8]]  = dataframe["2013"][i]
+        mainDict[headTitles[9]]  = dataframe["2014"][i]
+        mainDict[headTitles[10]] = dataframe["2015"][i]
         # distanceDict = (dataframe["Distancias"][i])
         # mainDict[headTitles[5]] = distanceDict
         

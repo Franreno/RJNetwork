@@ -6,10 +6,7 @@ from genCSV import createListOfTuplesWithObject
 
 def createNetwork():
 
-    mainRJDatapath = './munincipiosRJ/RJdata/mainRJData.csv'
-
-    df = pd.read_csv(mainRJDatapath)
-    data = createListOfTuplesWithObject(df)
+    data = createListOfTuplesWithObject()
 
     G = nx.Graph()
 
