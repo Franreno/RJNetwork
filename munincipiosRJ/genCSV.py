@@ -12,7 +12,8 @@ dadosMunicipiosRJ = './munincipiosRJ/RJdata/dadosMunicipiosRJ.xlsx'
 def getCities(): 
     df = pd.read_excel(dadosMunicipiosRJ)
     allCities = df["Município"]
-    return allCities
+    pop = df["População_estimada_pessoas"]
+    return allCities, pop
 
 # Calculate all distances from a certain city
 def calculateDistances(currentCity: str, latlnglist):
@@ -71,7 +72,7 @@ def main():
 
     LatLngDF = pd.read_csv(LatLngPath)
 
-    allCities = getCities()
+    allCities,Population = getCities()
     allCitiesList = []
 
     years = ['2010', '2011', '2012', '2013', '2014', '2015']
@@ -89,12 +90,13 @@ def main():
         cityList.append(LatLngDF["Latitude"][i])
         cityList.append(LatLngDF["Longitude"][i])
         cityList.append(limitrofes[allCities[i]])
+        cityList.append(Population[i])
         for j in range(len(years)):
             cityList.append(DengueDataOfYear[j][i])
         allCitiesList.append(cityList)
 
     # Cols to be used in the pandas dataframe
-    cols = ["Municipios", "Latitude", "Longitude", "Limitrofes"]
+    cols = ["Municipios", "Latitude", "Longitude", "Limitrofes", "Populacao"]
     cols += years
     print(cols)
     df = pd.DataFrame(allCitiesList, columns=cols)
@@ -105,9 +107,6 @@ def normalize(df):
     result = df.copy()
     years = ["2010", "2011", "2012", "2013", "2014", "2015"]
     for year in years:
-        # max_value = df[year].max()
-        # min_value = df[year].min()
-        # result[year] = (df[year] - min_value) / (max_value - min_value)
         result[year] = np.log(df[year])
     return result
 
@@ -120,7 +119,7 @@ def createListOfTuplesWithObject():
     dataframe = normalize(df)
 
 
-    headTitles = ["id", "Municipio", "Latitude", "Longitude", "Limitrofes", "2010", "2011", "2012", "2013", "2014", "2015"]
+    headTitles = ["id", "Municipio", "Latitude", "Longitude", "Limitrofes", "Populacao", "2010", "2011", "2012", "2013", "2014", "2015"]
 
 
     listOfTuples = []
@@ -132,15 +131,14 @@ def createListOfTuplesWithObject():
         mainDict[headTitles[2]]  = dataframe["Latitude"][i]
         mainDict[headTitles[3]]  = dataframe["Longitude"][i]
         mainDict[headTitles[4]]  = dataframe["Limitrofes"][i]
-        mainDict[headTitles[5]]  = dataframe["2010"][i]
-        mainDict[headTitles[6]]  = dataframe["2011"][i]
-        mainDict[headTitles[7]]  = dataframe["2012"][i]
-        mainDict[headTitles[8]]  = dataframe["2013"][i]
-        mainDict[headTitles[9]]  = dataframe["2014"][i]
-        mainDict[headTitles[10]] = dataframe["2015"][i]
-        # distanceDict = (dataframe["Distancias"][i])
-        # mainDict[headTitles[5]] = distanceDict
-        
+        mainDict[headTitles[5]]  = dataframe["Populacao"][i]
+        mainDict[headTitles[6]]  = dataframe["2010"][i]
+        mainDict[headTitles[7]]  = dataframe["2011"][i]
+        mainDict[headTitles[8]]  = dataframe["2012"][i]
+        mainDict[headTitles[9]]  = dataframe["2013"][i]
+        mainDict[headTitles[10]]  = dataframe["2014"][i]
+        mainDict[headTitles[11]] = dataframe["2015"][i]
+
         listOfTuples.append( (i,mainDict) )
 
 
@@ -149,5 +147,4 @@ def createListOfTuplesWithObject():
 
 
 if __name__ == "__main__":
-    # getDengueData()
     main()
