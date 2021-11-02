@@ -11,8 +11,8 @@ G = createNetwork()
 edge_x = []
 edge_y = []
 for edge in G.edges():
-    x0, y0 = G.nodes[edge[0]]['gpos']
-    x1, y1 = G.nodes[edge[1]]['gpos']
+    x0, y0 = G.nodes[edge[0]]['data'].lngLat
+    x1, y1 = G.nodes[edge[1]]['data'].lngLat
     edge_x.append(x0)
     edge_x.append(x1)
     edge_x.append(None)
@@ -29,13 +29,14 @@ edge_trace = go.Scatter(
 node_x = []
 node_y = []
 for node in G.nodes():
-    x, y = G.nodes[node]['gpos']
+    x, y = G.nodes[node]['data'].lngLat
     node_x.append(x)
     node_y.append(y)
 
 # years = input("Escolha um ano: [2010, 2011, 2012, 2013, 2014, 2015]\n  >")
 # year = year if year != None else "2010"
-years = ["2010", "2011", "2012", "2013", "2014", "2015"]
+# years = ["2010", "2011", "2012", "2013", "2014", "2015"]
+years = ["2010"]
 for year in years:
     node_trace = go.Scatter(
         x=node_x, y=node_y,
@@ -62,8 +63,8 @@ for year in years:
     node_adjacencies = []
     node_text = []
     for node, adjacencies in enumerate(G.adjacency()):
-        node_adjacencies.append( G.nodes[node][year] )
-        node_text.append(f"Municipio: {G.nodes[node]['Municipio']}[{str(node)}]   |   Total de casos de Dengue no Ano {year}: { str(G.nodes[node][year]) }")
+        node_adjacencies.append( G.nodes[node]['data'].totalYearDengueData[0] )
+        node_text.append(f"Municipio: {G.nodes[node]['data'].city}[{str(node)}]   |   Total de casos de Dengue no Ano {year}: { str(G.nodes[node]['data'].totalYearDengueData[0]) }")
 
     node_trace.marker.color = node_adjacencies
     node_trace.text = node_text
@@ -78,4 +79,6 @@ for year in years:
                     xaxis=dict(showgrid=False, zeroline=False, showticklabels=False),
                     yaxis=dict(showgrid=False, zeroline=False, showticklabels=False))
                     )
+    fig.update_xaxes(rangeslider_visible=True)
+
     fig.show()

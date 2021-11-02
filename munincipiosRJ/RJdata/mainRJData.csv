@@ -13,13 +13,13 @@
 11,Cabo Frio,-22.8804369,-42.0189227,"Araruama,Armação dos Búzios,Arraial do Cabo,Casimiro de Abreu,São Pedro da Aldeia,Silva Jardim",234077,1705,5684,3114,6705,178,172
 12,Cachoeiras de Macacu,-22.4626861,-42.6534414,"Nova Friburgo,Silva Jardim,Rio Bonito,Tanguá,Itaboraí,Guapimirim,Teresópolis",59652,355,237,199,2675,73,11
 13,Cambuci,-21.5749919,-41.9107833,"Aperibé,Italva,Itaocara,Itaperuna,Santo Antônio de Pádua,São Fidélis,São José de Ubá",15521,58,117,35,344,4,14
-14,Campos dos Goytacazes,-22.1869969,-41.6633764,"São Francisco de Itabapoana,Santa Maria Madalena,São João da Barra,Quissamã,São Fidélis,Cardoso Moreira,Italva,Bom Jesus do Itabapoana",514643,2166,4101,1182,14462,107,3463
-15,Cantagalo,-22.028685,-43.204655,"Carmo,Cordeiro,Duas Barras,Itaocara,Macuco,Santo Antônio de Pádua,São Sebastião do Alto",20163,159,552,9,792,4,5
-16,Carapebus,-21.7558619,-41.3326895,"Conceição de Macabu,Macaé,Quissamã",16859,21,33,2,516,3,94
-17,Cardoso Moreira,-21.9811325,-42.3682522,"Campos dos Goytacazes,Italva,São Fidélis",12818,10,41,25,188,5,30
-18,Carmo,-21.4894916,-41.6152776,"Cantagalo,Duas Barras,Sapucaia,Sumidouro",19161,15,94,7,59,0,12
-19,Casimiro de Abreu,-21.9341749,-42.6091737,"Cabo Frio,Macaé,Nova Friburgo,Rio das Ostras,Silva Jardim",45864,550,244,85,1173,6,78
-20,Comendador Levy Gasparian,-22.4809932,-42.2039976,"Paraíba do Sul,Três Rios.",8590,3,8,1,210,0,1
+14,Campos dos Goytacazes,-21.7545,-41.3244,"São Francisco de Itabapoana,Santa Maria Madalena,São João da Barra,Quissamã,São Fidélis,Cardoso Moreira,Italva,Bom Jesus do Itabapoana",514643,2166,4101,1182,14462,107,3463
+15,Cantagalo,-21.982,-42.3679,"Carmo,Cordeiro,Duas Barras,Itaocara,Macuco,Santo Antônio de Pádua,São Sebastião do Alto",20163,159,552,9,792,4,5
+16,Carapebus,-22.2033,-41.6625,"Conceição de Macabu,Macaé,Quissamã",16859,21,33,2,516,3,94
+17,Cardoso Moreira,-21.488285,-41.7578,"Campos dos Goytacazes,Italva,São Fidélis",12818,10,41,25,188,5,30
+18,Carmo,-21.9239,-42.6149,"Cantagalo,Duas Barras,Sapucaia,Sumidouro",19161,15,94,7,59,0,12
+19,Casimiro de Abreu,-22.4849,-42.2013,"Cabo Frio,Macaé,Nova Friburgo,Rio das Ostras,Silva Jardim",45864,550,244,85,1173,6,78
+20,Comendador Levy Gasparian,-22.0427,-43.2083,"Paraíba do Sul,Três Rios.",8590,3,8,1,210,0,1
 21,Conceição de Macabu,-22.0849986,-41.8679947,"Campos dos Goytacazes,Carapebus,Macaé,Quissamã,Santa Maria Madalena,Trajano de Moraes",23561,11,26,9,39,2,67
 22,Cordeiro,-22.0287681,-42.3607442,"Bom Jardim,Cantagalo,Duas Barras,Trajano de Moraes,Macuco",22152,73,1200,45,789,2,34
 23,Duas Barras,-22.0522519,-42.5194705,"Bom Jardim,Cantagalo,Carmo,Cordeiro,Nova Friburgo,Sumidouro",11563,2,9,2,21,0,0
@@ -69,14 +69,14 @@
 67,Rio de Janeiro,-22.9110137,-43.2093727,"Duque de Caxias,Itaguaí,Seropédica,Mesquita,Nilópolis,Niterói,Nova Iguaçu,São João de Meriti",6775561,3076,76009,134577,66203,2688,17616
 68,Santa Maria Madalena,-21.9557957,-42.008283,"Campos dos Goytacazes,Conceição de Macabu,São Fidélis,São Sebastião do Alto,Trajano de Moraes",10380,0,4,0,8,0,3
 69,Santo Antônio de Pádua,-21.5389992,-42.1799978,"Miracema,São José de Ubá,Cambuci,Aperibé,Itaocara,Cantagalo",42705,184,1047,749,671,45,625
-70,São Fidélis,-21.4743369,-41.1118362,"Cambuci,Campos dos Goytacazes,Cardoso Moreira,Italva,Itaocara,Santa Maria Madalena,São Sebastião do Alto",38749,412,593,125,695,12,240
-71,São Francisco de Itabapoana,-21.6482101,-41.7480548,"Campos dos Goytacazes,São João da Barra",42214,33,143,26,1801,66,251
+70,São Fidélis,-21.6431,-41.7578,"Cambuci,Campos dos Goytacazes,Cardoso Moreira,Italva,Itaocara,Santa Maria Madalena,São Sebastião do Alto",38749,412,593,125,695,12,240
+71,São Francisco de Itabapoana,-21.47437,-41.1202,"Campos dos Goytacazes,São João da Barra",42214,33,143,26,1801,66,251
 72,São Gonçalo,-22.8219014,-43.0309252,"Niterói,Maricá,Itaboraí",1098357,1816,5751,10068,15777,915,1503
 73,São João da Barra,-21.6348588,-41.0487079,"Campos dos Goytacazes,São Francisco de Itabapoana",36731,291,105,17,213,5,58
 74,São João de Meriti,-22.8043744,-43.3724125,"Belford Roxo,Duque de Caxias,Mesquita,Nilópolis,Rio de Janeiro.",473385,382,3649,1630,1541,73,111
 75,São José de Ubá,-21.3595365,-41.9389905,"Cambuci,Itaperuna,Miracema,Santo Antônio de Padua",7240,1,6,6,66,5,185
 76,São José do Vale do Rio Preto,-22.1509994,-42.9239986,"Areal,Petrópolis,Sapucaia,Sumidouro,Teresópolis,Três Rios",22032,52,99,8,378,3,677
-77,São Pedro da Aldeia,-22.8384835,-42.1031604,"Araruama,Cabo Frio,Iguaba Grande",107556,244,643,312,1846,282,41
+77,São Pedro da Aldeia,-22.8362,-42.1037,"Araruama,Cabo Frio,Iguaba Grande",107556,244,643,312,1846,282,41
 78,São Sebastião do Alto,-21.9568272,-42.134815,"Cantagalo,Itaocara,Macuco,Santa Maria Madalena,São Fidélis,Trajano de Morais",9416,0,8,1,141,0,0
 79,Sapucaia,-21.9946569,-42.9137975,"Carmo,São José do Vale do Rio Preto,Sumidouro,Três Rios",18270,4,104,32,484,1,100
 80,Saquarema,-22.9257974,-42.507633,"Araruama,Maricá,Rio Bonito,Tanguá",91938,172,591,216,2020,11,1983
