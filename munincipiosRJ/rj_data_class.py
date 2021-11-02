@@ -1,7 +1,14 @@
 import pandas as pd
+import numpy as np
 
+xlsDenguePath = './munincipiosRJ/RJdata/Dengue_Brasil_2010-2016_Daniel.xlsx'
 mainRJDatapath = './munincipiosRJ/RJdata/mainRJData.csv'
+names = ['id', 'cities']
+for i in range(1, 53):
+    names.append(str(i))
+names.append('total')
 
+years = ["2010", "2011", "2012", "2013", "2014", "2015"]
 
 class rjData:
     def __init__(self):
@@ -26,30 +33,44 @@ class rjData:
     def initializeNodeData(self):
         listOfObjects = []
 
+        dengueDataframe = pd.read_excel(xlsDenguePath, names=names,
+                                        header=None, sheet_name=None)
         for i in range(len(self.municipios)):
             listOfObjects.append(
                 rjDataNode(
                     self.municipios[i], self.longitudes[i], self.latitudes[i], self.limitrofes[i], self.populacoes[i],
                     self.dataFrom2010[i], self.dataFrom2011[i], self.dataFrom2012[i], self.dataFrom2013[i],
-                    self.dataFrom2014[i], self.dataFrom2015[i]
+                    self.dataFrom2014[i], self.dataFrom2015[i], i, dengueDataframe
                 )
             )
         return listOfObjects
 
 
 class rjDataNode(rjData):
-    def addDengueDataOfYear(self, df):
-        pass
 
+    def _addDengueDataOfYear(self, df, year, index):
+        # 52 long list.
+        # print(df)
+        df = df[year].iloc[index]
+        df = df[2:]
+        df = df[:52]
+        return df
 
-    
-    def __init__(self, city, lng, lat, limf, pop, d2010, d2011, d2012, d2013, d2014, d2015):
+    def __init__(self, city, lng, lat, limf, pop, d2010, d2011, d2012, d2013, d2014, d2015, index, dengueDataframe):
         self.city = city
         self.lngLat = [lng, lat]
         self.limitrofe = limf
         self.populacao = pop
         self.totalYearDengueData = [d2010, d2011, d2012, d2013, d2014, d2015]
-        # super().__init__()
+        self.dengueData = {}
+        self.logTotalYearDengueData = [ np.log10( year+0.01 ) for year in self.totalYearDengueData ]
+        self.totalYearDengueDataByPop = [ (np.divide( year, self.populacao )*100000) for year in self.totalYearDengueData]
+
+        for year in years:
+            self.dengueData[year] = self._addDengueDataOfYear(
+                dengueDataframe, year, index)
+        self.dengueDataCumulative = 0
+        self.logDengueDataCumulative = 0
 
     def setCityName(self, name):
         self.city = name
@@ -57,4 +78,14 @@ class rjDataNode(rjData):
 
 # r = rjData()
 # listOfNodes = r.initializeNodeData()
-# print(listOfNodes[0])
+# single: rjDataNode
+# for e in listOfNodes:
+#     if e.city == "Tanguá":
+#         single = e
+
+# print(single.city)
+# print(single.totalYearDengueData)
+# print(single.logTotalYearDengueData)
+# print(single.populacao)
+# print(single.totalYearDengueDataByPop)
+# # 
