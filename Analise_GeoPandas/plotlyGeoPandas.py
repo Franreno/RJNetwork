@@ -24,7 +24,8 @@ with open(rjPath, "r") as geo:
     mp = json.load(geo)
 print("Aberto com sucesso")
 
-cols = ["Municipio", "Week", "Value"]
+cols = ["Municipio", "Week", "Casos"]
+colsPercPop = ["Municipio", "Week", "Casos", "Porcentagem", "População"]
 years = ["2010", "2011", "2012", "2013", "2014", "2015"]
 
 
@@ -64,34 +65,69 @@ def createMediaMovelSimples(dataDF):
     return mainDataList
 
 
-def createMediaMovelPonderada(dataDF, outputPath, titleStr):
-    pass
+def createWeeklyDataWithPopulation(dataDF):
+    mainDataList = []
+    for i in range(len(dataDF["cities"])):
+        cumulative = 0
+        percentage = 0
+        pop = dataDF["Pop"][i]
+        for week in weeks:
+            cumulative +=  dataDF[str(week)][i]
+            percentage = (cumulative / pop) * 100
+            dataList = [dataDF["cities"][i], week, cumulative, percentage, pop]
+            mainDataList.append(dataList)
+
+    return mainDataList
+
+def createMediaSimplesWithPopulation(dataDF):
+    mainDataList = []
+    for i in range(len(dataDF["cities"])):
+        j=0
+        percentage = 0
+        month=0
+        pop = dataDF["Pop"][i]
+        while(j < 52):
+            cumulative = 0
+            
+            while(j % 4 != 0 or j == 0):
+                cumulative += dataDF[str(weeks[j])][i] 
+                j+=1
+            
+            percentage = (cumulative / pop) * 100
+            dataList = [dataDF["cities"][i], month, cumulative, percentage, pop]
+            mainDataList.append(dataList)
+            month+=1
+            j+=1
+        
+    colsPercPop[1] = "Month"
+
+    return mainDataList
+
 
 for year in years:
     print(f"\nStatus: Ano {year}\n")
 
     dataDF = weeklyDengueData[year].join(dadosMunicipais["Pop"])
 
-    typeIndex = 2
+    typeIndex = 3
 
     titleStr = [f"Casos de Dengue por semana em {year}",
-                f"Casos de Dengue por semana com população em {year}" 
+                f"Casos de Dengue por semana com população em {year}",
                 f"Casos de Dengue média móvel em {year}",
-                f"Casos de Dengue média móvel com população em {year}"]
+                f"Porcentagem da população com Dengue em cada mês no ano {year}"]
 
     outputPath = [
         "./plotlyPages/paginasGeoJSON/byWeeks/",
         "./plotlyPages/paginasGeoJSON/byWeeksWithPopulation/",
         "./plotlyPages/paginasGeoJSON/bySimpleMovingAverage/",
-        "./plotlyPages/paginasGeoJSON/bySimpleMovingAverageWithPopulation/"
+        "./plotlyPages/paginasGeoJSON/byAveragePopulation/"
     ]
 
     functions = [
         createWeeklyData(dataDF),
-        createWeeklyData(dataDF),
-        # createWeeklyDataWithPopulation(dataDF),
+        createWeeklyDataWithPopulation(dataDF),
         createMediaMovelSimples(dataDF), 
-        # createMediaMovelSimplesWithPopulation(dataDF), 
+        createMediaSimplesWithPopulation(dataDF), 
     ]
 
     print("Criando frames")
@@ -100,7 +136,7 @@ for year in years:
     print("Criado com sucesso")
     
 
-    finalDF = pd.DataFrame(mainDataList, columns=cols)
+    finalDF = pd.DataFrame(mainDataList, columns=colsPercPop)
 
     print("Criando figura")
     fig = px.choropleth(
@@ -109,9 +145,10 @@ for year in years:
         geojson=mp,
         featureidkey="properties.NOME",
         locationmode='geojson-id',
-        animation_frame=cols[1],
-        color="Value",
-        title=f"{titleStr[typeIndex]}"
+        animation_frame=colsPercPop[1],
+        color="Porcentagem",
+        hover_data=["Porcentagem", "Casos", "População"],
+        title=f"{titleStr[typeIndex]}",
     )
     print("Figura criada")
 
