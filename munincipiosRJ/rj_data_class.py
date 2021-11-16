@@ -1,8 +1,8 @@
 import pandas as pd
 import numpy as np
 
-xlsDenguePath = './munincipiosRJ/RJdata/Dengue_Brasil_2010-2016_Daniel.xlsx'
-mainRJDatapath = './munincipiosRJ/RJdata/mainRJData.csv'
+from dataPath import xlsDenguePath, mainRJDatapath
+
 names = ['id', 'cities']
 for i in range(1, 53):
     names.append(str(i))

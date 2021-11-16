@@ -5,11 +5,8 @@ from geopy.distance import geodesic
 import pandas as pd
 import numpy as np
 
-dadosMunicipiosRJ = './munincipiosRJ/RJdata/dadosMunicipiosRJ.xlsx'
-limpath = './munincipiosRJ/RJdata/limitrofes.csv'
-LatLngPath = './munincipiosRJ/RJdata/LatLng.csv'
-xlsDenguePath = './munincipiosRJ/RJdata/Dengue_Brasil_2010-2016_Daniel.xlsx'
-mainRJDatapath = './munincipiosRJ/RJdata/mainRJData.csv'
+
+from dataPath import *
 
 names = ['id', 'cities']
 for i in range(1, 53):
@@ -73,7 +70,7 @@ def main():
     cols = ["Municipios", "Latitude", "Longitude", "Limitrofes", "Populacao"]
     cols += years
     df = pd.DataFrame(allCities_List, columns=cols)
-    df.to_csv('./munincipiosRJ/RJdata/mainRJData.csv')
+    df.to_csv('./RJdata/mainRJData.csv')
 
 
 def normalize(df):
