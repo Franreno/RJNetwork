@@ -46,7 +46,33 @@ for i in range(len(IBGEDICT["2010"].keys())):
             percentage = 0
         mainDataList.append( [city, year, percentage, diff, float(UFRJdata), float(IBGEdata)] )
 
+colorValues = ['rgb(62, 171, 165)', 'rgb(0, 0, 255)', 'rgb(103, 100, 255)','rgb(203, 80, 75)','rgb(255, 165, 0)','rgb(255, 75, 0)', 'rgb(255,0,0)']
 
+def createColorScale(data):
+    ticksvals = np.linspace(0, data.max(), 7)
+    x = np.linspace(0.1, 1, 7)
+
+
+    colorscale = [ [0.0, 'rgb(0,255,0)' ] ]
+    colorscale.append( [0.000001, 'rgb(0,255,0)'] )
+    colorscale.append( [0.000001, colorValues[0]] )
+    colorscale.append( [0.2, colorValues[1]] )
+    colorscale.append( [0.4, colorValues[2]] )
+    colorscale.append( [0.6, colorValues[3]] )
+    colorscale.append( [0.8, colorValues[4]] )
+    colorscale.append( [0.9, colorValues[5]] )
+    colorscale.append( [1, colorValues[6]] )
+
+    return ticksvals, colorscale
+
+
+ticksvals, colorscale = createColorScale(UFRJDengueData["2010"]["total"])
+
+colorbar = dict(
+    tick0 = 0,
+    tickmode = 'array',
+    tickvals = ticksvals
+)
 
 finalDF = pd.DataFrame(mainDataList, columns=cols)
 print(finalDF)
@@ -62,6 +88,8 @@ fig = px.choropleth(
     color="Diff",
     hover_data=["Porcentagem", "Diff", "UFRJ", "IBGE"],
     title=f"Diff ano",
+    # colorbar = colorbar,
+    color_continuous_scale=colorscale
 )
 print("Figura criada")
 
