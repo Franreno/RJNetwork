@@ -26,7 +26,7 @@ with open(rjPath, "r") as geo:
     mp = json.load(geo)
 print("Aberto com sucesso")
 
-cols = ["Municipio", "Ano", "Porcentagem", "Diff", "UFRJ", "IBGE"]
+cols = ["Municipio", "Ano", "Porcentagem", "Diferença", "UFRJ", "IBGE"]
 years = ["2010", "2011", "2012"]
 IBGEDICT, UFRJDICT = getData()
 
@@ -85,10 +85,9 @@ fig = px.choropleth(
     featureidkey="properties.NOME",
     locationmode='geojson-id',
     animation_frame=cols[1],
-    color="Diff",
-    hover_data=["Porcentagem", "Diff", "UFRJ", "IBGE"],
-    title=f"Diff ano",
-    # colorbar = colorbar,
+    color="Porcentagem",
+    hover_data=["Porcentagem", "Diferença", "UFRJ", "IBGE"],
+    title=f"Porcentagem da diferença",
     color_continuous_scale=colorscale
 )
 print("Figura criada")
@@ -101,5 +100,5 @@ fig.update_geos(
 outputPath = "./plotlyPages/comparision/"
 print("Salvando figura")
 fig.show()
-fig.write_html(outputPath + "Diff" + '.html')
+fig.write_html(outputPath + "Porcentagem" + '.html')
 print("Sucesso...")
