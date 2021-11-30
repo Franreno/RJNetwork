@@ -4,8 +4,9 @@ import pandas as pd
 from pandas.core.dtypes.missing import isnull
 import plotly.express as px
 
+from data import getData
+
 rjPath = "./RJdata/RJ.json"
-ibgePath = "./RJdata/dengueIBGE.csv"
 ufrjPath = "./RJdata/Dengue_Brasil_2010-2016_Daniel.xlsx"
 
 names = ['id', 'cities']
@@ -20,10 +21,6 @@ weeks = np.linspace(1, 52, 52, dtype=int)
 print("Aberto com sucesso")
 
 
-print("Abrindo dados IBGE")
-IBGEDengueData = pd.read_csv(ibgePath)
-print("Aberto com sucesso")
-
 print("Abrindo geoJSON")
 with open(rjPath, "r") as geo:
     mp = json.load(geo)
@@ -31,27 +28,10 @@ print("Aberto com sucesso")
 
 cols = ["Municipio", "Ano", "Porcentagem", "Diff", "UFRJ", "IBGE"]
 years = ["2010", "2011", "2012"]
+IBGEDICT, UFRJDICT = getData()
+
 
 mainDataList = []
-IBGEDICT = {}
-UFRJDICT = {}
-
-for year in years:
-    IBGEDICT[year] = {}
-    isNull = pd.isna(IBGEDengueData[year])
-    for i in range(len(IBGEDengueData["Localidade"])):
-        data = IBGEDengueData[year][i]
-        if(data != '-' and isNull[i] == False ):
-            IBGEDICT[year][IBGEDengueData["Localidade"][i]] = data
-        else:
-            IBGEDICT[year][IBGEDengueData["Localidade"][i]] = 0
-        
-
-    UFRJDICT[year] = {}
-    for i in range(len(UFRJDengueData[year]["cities"])):
-        UFRJDICT[year][UFRJDengueData[year]["cities"][i]] = UFRJDengueData[year]["total"][i]
-
-
 #Criar o dataframe para o plotly
 for i in range(len(IBGEDICT["2010"].keys())):
     for year in years:
@@ -65,7 +45,7 @@ for i in range(len(IBGEDICT["2010"].keys())):
         else:
             percentage = 0
         mainDataList.append( [city, year, percentage, diff, float(UFRJdata), float(IBGEdata)] )
-    # break
+
 
 
 finalDF = pd.DataFrame(mainDataList, columns=cols)
