@@ -35,13 +35,13 @@ def getData():
         for i in range(len(IBGEDengueData["Localidade"])):
             data = IBGEDengueData[year][i]
             if(data != '-' and isNull[i] == False ):
-                IBGEDICT[year][IBGEDengueData["Localidade"][i]] = data
+                IBGEDICT[year][IBGEDengueData["Localidade"][i]] = int(data)
             else:
                 IBGEDICT[year][IBGEDengueData["Localidade"][i]] = 0
             
 
         UFRJDICT[year] = {}
         for i in range(len(UFRJDengueData[year]["cities"])):
-            UFRJDICT[year][UFRJDengueData[year]["cities"][i]] = UFRJDengueData[year]["total"][i]
+            UFRJDICT[year][UFRJDengueData[year]["cities"][i]] = int(UFRJDengueData[year]["total"][i])
             
     return IBGEDICT, UFRJDICT
